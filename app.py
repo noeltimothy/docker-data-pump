@@ -32,6 +32,11 @@ table = db.Table(os.environ['DYNAMO_TABLE'])
 query_key = os.environ['DYNAMO_QUERY_KEY']
 query_value = os.environ['DYNAMO_QUERY_VALUE']
 
+#
+# This functions creates a logger for this application
+# we use the stdout logger handle and print all logs to stdout
+# The caller can redirect this to any log file
+#
 def configure_logging():
     _logger = logging.getLogger('APP')
     _logger.setLevel(logging.DEBUG)
@@ -41,10 +46,22 @@ def configure_logging():
     _logger.addHandler(ch)
     return _logger
 
+# 
+# This function performs the actual dynamo query
+# The inputs are:
+#   tbl - A handle to the Dynamo DB Table, the table name comes from the environment variable DYNAMO_TABLE
+#   key - This is the key we  search for
+#   value - The value we are searching for
+#
+# Returns the items from the response or An empty array if no matching values are found
 def perform_dynamo_query(tbl, key, value):
     response = tbl.query(KeyConditionExpression=Key(key).eq(value))
     return response['Items']
 
+#
+# This function performs the entire service of performing the Dynamo DB query and 
+# posting the results to the provided POST URL
+#
 def start():
     try:
         db_results = perform_dynamo_query(table, query_key, query_value)
@@ -59,6 +76,9 @@ def start():
     except Exception as e:
         logger.error(F"Failure: Exception: {e}")
 
+
+# Currently, the main loop uses a simple sleep between executions. The sleep time is provided in minutes
+# but the call here uses it in seconds
 if __name__ == "__main__":
     logger = configure_logging()
     while True:
