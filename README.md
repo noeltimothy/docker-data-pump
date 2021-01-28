@@ -21,19 +21,20 @@ This is implemented within a docker container and all input is passed using envi
 This docker container requires the following inputs in the provided env file to run successfuly.
 An example env file is already present in this repo
 
-- AWS_KEY : This is the AWS key to your account
-- AWS_SECRET: This is the AWS secret to your account
-- AWS_REGION: You can specify the AWS region such as 'us-east-2'
-- DYNAMO_TABLE: This is the name of an existing Dynamo DB on your AWS account within the region you provided
-- DYNAMO_QUERY_KEY: The Dynamo query searches the above table using this key
-- DYNAMO_QUERY_VALUE: The Dynamo query searches the above table to match this value
-- POST_URL: This is the URL where the results will be posted
-- SLEEP_TIME: This is the time in minutes between executions of this service
-
+```
+- AWS_KEY  #This is the AWS key to your account
+- AWS_SECRET #This is the AWS secret to your account
+- AWS_REGION #You can specify the AWS region such as 'us-east-2'
+- DYNAMO_TABLE #This is the name of an existing Dynamo DB on your AWS account within the region you provided
+- DYNAMO_QUERY_KEY #The Dynamo query searches the above table using this key
+- DYNAMO_QUERY_VALUE #The Dynamo query searches the above table to match this value
+- POST_URL #This is the URL where the results will be posted
+- SLEEP_TIME #This is the time in minutes between executions of this service
+```
 
 ## How to run?
 
-``
+```
 sudo docker run --env-file=env -d --name docker_pump docker_pump:latest
 ```
 
